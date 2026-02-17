@@ -1,0 +1,13 @@
+# virtual environment
+venv/
+
+# dataset
+data/primus_raw/
+
+# python cache
+__pycache__/
+*.pyc
+
+# checkpoints
+*.h5
+*.ckpt
