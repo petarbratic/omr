@@ -1,5 +1,6 @@
 # virtual environment
 venv/
+omr_env/
 
 # dataset
 data/primus_raw/
