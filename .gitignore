@@ -12,3 +12,6 @@ __pycache__/
 # checkpoints
 *.h5
 *.ckpt
+
+#artifacts
+artifacts/
