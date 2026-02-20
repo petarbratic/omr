@@ -1,1 +1,0 @@
-# Script for testing the trained model on the test image.
