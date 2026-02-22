@@ -4,6 +4,8 @@ omr_env/
 
 # dataset
 data/primus_raw/
+srcNonE2E/data/baseCSV
+out/
 
 # python cache
 __pycache__/
