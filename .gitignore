@@ -17,3 +17,6 @@ __pycache__/
 
 #artifacts
 artifacts/
+
+#oldVersion
+srcE2E/
