@@ -14,16 +14,7 @@ from srcNonE2E.data.pr_labels import NUM_PITCH_CLASSES
 from srcNonE2E.data.dr_labels import NUM_DURATION_CLASSES
 from srcNonE2E.models.pitch_model import build_pr_cnn
 from srcNonE2E.models.duration_model import build_dr_cnn
-
-
-def _enable_gpu_memory_growth() -> None:
-    gpus = tf.config.list_physical_devices("GPU")
-    if not gpus:
-        print("GPUs: []")
-        return
-    print("GPUs:", gpus)
-    for gpu in gpus:
-        tf.config.experimental.set_memory_growth(gpu, True)
+from srcNonE2E.utils.tf_utils import _enable_gpu_memory_growth
 
 
 def _build_pr_config() -> dict:

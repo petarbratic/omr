@@ -5,16 +5,7 @@ import matplotlib.pyplot as plt
 from srcNonE2E.data.pr_dataset import make_pr_dataset
 from srcNonE2E.data.pr_labels import NUM_PITCH_CLASSES
 from srcNonE2E.models.pitch_model import build_pr_cnn
-
-
-def _enable_gpu_memory_growth():
-    gpus = tf.config.list_physical_devices("GPU")
-    if not gpus:
-        print("GPUs: []")
-        return
-    print("GPUs:", gpus)
-    for gpu in gpus:
-        tf.config.experimental.set_memory_growth(gpu, True)
+from srcNonE2E.utils.tf_utils import _enable_gpu_memory_growth
 
 
 def _save_training_plots(history, out_dir: str, prefix: str):

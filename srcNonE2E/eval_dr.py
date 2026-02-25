@@ -3,16 +3,7 @@ import tensorflow as tf
 
 from srcNonE2E.data.dr_dataset import make_dr_dataset
 from srcNonE2E.data.dr_labels import ID_TO_DURATION, NUM_DURATION_CLASSES
-
-
-def _enable_gpu_memory_growth():
-    gpus = tf.config.list_physical_devices("GPU")
-    if not gpus:
-        print("GPUs: []")
-        return
-    print("GPUs:", gpus)
-    for gpu in gpus:
-        tf.config.experimental.set_memory_growth(gpu, True)
+from srcNonE2E.utils.tf_utils import _enable_gpu_memory_growth
 
 
 def main():
