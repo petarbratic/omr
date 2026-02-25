@@ -63,8 +63,6 @@ def _build_pr_config() -> dict:
         "num_classes": NUM_PITCH_CLASSES,
         "build_model": build_pr_cnn,
         "artifact_path": "artifacts/pr_cnn.keras",
-        "early_stopping_patience": 5,
-        "reduce_lr_patience": 2,
     }
 
 
@@ -81,8 +79,6 @@ def _build_dr_config() -> dict:
         "num_classes": NUM_DURATION_CLASSES,
         "build_model": build_dr_cnn,
         "artifact_path": "artifacts/dr_cnn.keras",
-        "early_stopping_patience": 3,
-        "reduce_lr_patience": 1,
     }
 
 
