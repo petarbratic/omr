@@ -5,7 +5,7 @@ import os
 import cv2
 import tensorflow as tf
 
-from srcNonE2E.data.region_extractor import extract_regions as _extract_regions
+from srcNonE2E.data.region_extractor import extract_regions
 from srcNonE2E.utils.tf_utils import _enable_gpu_memory_growth
 from srcNonE2E.eval_helpers.eval_geometry import sort_regions_by_x
 from srcNonE2E.eval_helpers.eval_gt import gt_tokens_from_transcript
@@ -20,8 +20,7 @@ PR_MODEL_PATH = "artifacts/pr_cnn.keras"
 DR_MODEL_PATH = "artifacts/dr_cnn.keras"
 INPUT_H = 257
 INPUT_W = 65
-BATCH_SIZE = 256
-LIMIT = 0  # 0 means no limit
+BATCH_SIZE = 256  # crops per batch when calling model.predict (many regions per image)
 PROGRESS_EVERY = 100
 
 
@@ -37,8 +36,6 @@ def main():
     dr_model = tf.keras.models.load_model(DR_MODEL_PATH)
 
     data = read_split_csv(CSV_PATH)
-    if LIMIT and LIMIT > 0:
-        data = data[:LIMIT]
 
     processed = 0
     evaluated = 0
@@ -67,7 +64,7 @@ def main():
             continue
 
         try:
-            regions = _extract_regions(img_bgr)
+            regions = extract_regions(img_bgr)
         except Exception:
             bad_or_missing += 1
             continue
