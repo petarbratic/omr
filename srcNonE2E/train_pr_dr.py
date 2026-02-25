@@ -6,6 +6,7 @@ python -m srcNonE2E.train_pr_dr --task dr
 import os
 import argparse
 
+import matplotlib.pyplot as plt
 import tensorflow as tf
 
 from srcNonE2E.data.pr_dr_dataset import make_pr_dataset, make_dr_dataset
@@ -13,6 +14,40 @@ from srcNonE2E.data.labels import NUM_PITCH_CLASSES, NUM_DURATION_CLASSES
 from srcNonE2E.models.pitch_model import build_pr_cnn
 from srcNonE2E.models.duration_model import build_dr_cnn
 from srcNonE2E.utils.tf_utils import _enable_gpu_memory_growth
+
+
+def _save_training_plots(history, out_dir: str, prefix: str) -> None:
+    os.makedirs(out_dir, exist_ok=True)
+
+    train_acc = history.history.get("acc", history.history.get("accuracy", []))
+    val_acc = history.history.get("val_acc", history.history.get("val_accuracy", []))
+
+    plt.figure()
+    if train_acc:
+        plt.plot(train_acc)
+    if val_acc:
+        plt.plot(val_acc)
+    plt.xlabel("Epoch")
+    plt.ylabel("Accuracy")
+    plt.legend(["train", "val"])
+    plt.tight_layout()
+    plt.savefig(os.path.join(out_dir, f"{prefix}_acc.png"), dpi=200)
+    plt.close()
+
+    train_loss = history.history.get("loss", [])
+    val_loss = history.history.get("val_loss", [])
+
+    plt.figure()
+    if train_loss:
+        plt.plot(train_loss)
+    if val_loss:
+        plt.plot(val_loss)
+    plt.xlabel("Epoch")
+    plt.ylabel("Loss")
+    plt.legend(["train", "val"])
+    plt.tight_layout()
+    plt.savefig(os.path.join(out_dir, f"{prefix}_loss.png"), dpi=200)
+    plt.close()
 
 
 def _build_pr_config() -> dict:
@@ -107,15 +142,18 @@ def main() -> None:
         metrics=[tf.keras.metrics.SparseCategoricalAccuracy(name="acc")],
     )
 
-    model.fit(
+    history = model.fit(
         train_ds,
         validation_data=val_ds,
         epochs=cfg["epochs"],
     )
 
+    _save_training_plots(history, out_dir="out/plots", prefix=args.task)
+
     os.makedirs(os.path.dirname(cfg["artifact_path"]) or ".", exist_ok=True)
     model.save(cfg["artifact_path"])
     print("Saved model:", cfg["artifact_path"])
+    print("Plots:", f"out/plots/{args.task}_acc.png", f"out/plots/{args.task}_loss.png")
 
 
 if __name__ == "__main__":
