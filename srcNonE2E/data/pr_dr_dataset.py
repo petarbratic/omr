@@ -1,7 +1,5 @@
-"""
-Single dataset implementation for region crops with a string label (pitch or duration).
-Use make_pr_dataset() for pitch recognition, make_dr_dataset() for duration recognition.
-"""
+# Single dataset implementation for region crops with a string label (pitch or duration).
+# Use make_pr_dataset() for pitch recognition, make_dr_dataset() for duration recognition.
 
 import tensorflow as tf
 

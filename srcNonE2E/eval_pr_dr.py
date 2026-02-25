@@ -1,7 +1,5 @@
-"""
-python -m srcNonE2E.eval_pr_dr --task pr
-python -m srcNonE2E.eval_pr_dr --task dr
-"""
+# python -m srcNonE2E.eval_pr_dr --task pr
+# python -m srcNonE2E.eval_pr_dr --task dr
 
 import argparse
 import numpy as np

@@ -1,13 +1,11 @@
-"""
-Input: (token string):
-  - "note.quarter-L4"
-  - "note.half-S-2"
-  - "note.beamedRight2-L3"
-  - "note.beamedBoth1-S3"
-Output:
-  - pitch: "L4", "S-2"
-  - duration: "quarter" | "half" | "whole" | "eighth" | "sixteenth" | "thirty_second"
-"""
+# Input note token examples:
+#   - "note.quarter-L4"
+#   - "note.half-S-2"
+#   - "note.beamedRight2-L3"
+#   - "note.beamedBoth1-S3"
+# Output:
+#   - pitch: "L4", "S-2"
+#   - duration: "quarter" | "half" | "whole" | "eighth" | "sixteenth" | "thirty_second"
 
 import re
 from typing import Optional, Tuple
@@ -31,17 +29,12 @@ _EXPLICIT_DURATIONS = {
     "thirty_second": "thirty_second",
 }
 
+# Parses a note token string.
+# Returns (duration, pitch) or None.
+# Examples:
+#   parse_note_token("note.quarter-L4") -> ("quarter", "L4")
+#   parse_note_token("note.beamedRight2-L3") -> ("sixteenth", "L3")
 def parse_note_token(token: str) -> Optional[Tuple[str, str]]:
-    """
-    Parses a note token string.
-
-    Returns:
-        (duration, pitch) or None.
-
-    Examples:
-        parse_note_token("note.quarter-L4") -> ("quarter", "L4")
-        parse_note_token("note.beamedRight2-L3") -> ("sixteenth", "L3")
-    """
     m = _NOTE_TOKEN_RE.match(token.strip())
     if not m:
         return None

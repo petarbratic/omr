@@ -1,7 +1,5 @@
-"""
-Pitch and duration label sets.
-Pitch: L-3..L8, S-3..S8 (24 classes). Duration: quarter, eighth, ... (9 classes).
-"""
+# Pitch and duration label sets.
+# Pitch: L-3..L8, S-3..S8 (24 classes). Duration: quarter, eighth, ... (9 classes).
 
 # Pitch: L-3..L8 and S-3..S8 (24 classes)
 PITCH_CLASSES = [f"L{i}" for i in range(-3, 9)] + [f"S{i}" for i in range(-3, 9)]
