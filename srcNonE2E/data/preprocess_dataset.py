@@ -36,9 +36,9 @@ from srcNonE2E.data.region_extractor import extract_regions as _extract_regions
 # DEFINES
 # =========================================================
 
-TRAIN_CSV = "srcNonE2E/data/baseCSV/trainNonE2E.csv"
-VAL_CSV   = "srcNonE2E/data/baseCSV/valNonE2E.csv"
-TEST_CSV  = "srcNonE2E/data/baseCSV/testNonE2E.csv"
+TRAIN_CSV = "data/splits/trainNonE2E.csv"
+VAL_CSV   = "data/splits/valNonE2E.csv"
+TEST_CSV  = "data/splits/testNonE2E.csv"
 
 IMAGES_ROOT = "data/primus_raw"
 OUT_DIR = "out/region_dataset"

@@ -165,7 +165,7 @@ def main():
     _enable_gpu_memory_growth()
 
     ap = argparse.ArgumentParser()
-    ap.add_argument("--csv", type=str, default="srcNonE2E/data/baseCSV/testNonE2E.csv")
+    ap.add_argument("--csv", type=str, default="data/splits/testNonE2E.csv")
     ap.add_argument("--images_root", type=str, default="data/primus_raw")
     ap.add_argument("--pr_model", type=str, default="artifacts/pr_cnn.keras")
     ap.add_argument("--dr_model", type=str, default="artifacts/dr_cnn.keras")

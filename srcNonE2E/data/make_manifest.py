@@ -1,15 +1,16 @@
 # This script filters out samples with "gracenote." and "dot-" in the transcript
 # from the previous manifest CSV files.
 import csv
+import os
 
 # ====== DEFINES ======
 TRAIN_IN = "data/manifest/train.csv"
 VAL_IN = "data/manifest/val.csv"
 TEST_IN = "data/manifest/test.csv"
 
-TRAIN_OUT = "srcNonE2E/data/trainNonE2E.csv"
-VAL_OUT = "srcNonE2E/data/valNonE2E.csv"
-TEST_OUT = "srcNonE2E/data/testNonE2E.csv"
+TRAIN_OUT = "data/splits/trainNonE2E.csv"
+VAL_OUT = "data/splits/valNonE2E.csv"
+TEST_OUT = "data/splits/testNonE2E.csv"
 # =====================
 
 
@@ -48,6 +49,7 @@ def filter_file(input_path, output_path):
 
 
 def main():
+    os.makedirs(os.path.dirname(TRAIN_OUT), exist_ok=True)
     filter_file(TRAIN_IN, TRAIN_OUT)
     filter_file(VAL_IN, VAL_OUT)
     filter_file(TEST_IN, TEST_OUT)

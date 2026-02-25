@@ -2,16 +2,19 @@
 debug_region_extractor.py
 
 Ručni test za extract_regions(img_bgr).
-
-- Učita sliku (ili listu slika)
-- Pozove extract_regions
-- Nacrta bbox-ove i sačuva debug sliku u OUT_DIR
-- Ispiše broj regiona
-
+- Učita sliku (ili listu slika), pozove extract_regions,
+  nacrta bbox-ove i sačuva debug sliku u OUT_DIR.
 Podesi IMAGE_PATHS i OUT_DIR u DEFINES.
-"""
 
+python -m scripts.debug_region_extractor
+"""
 import os
+import sys
+from pathlib import Path
+
+# Run from project root so srcNonE2E is importable
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+
 from typing import List
 
 import cv2
@@ -22,13 +25,6 @@ from srcNonE2E.data.region_extractor import extract_regions
 # =========================================================
 # DEFINES
 # =========================================================
-
-# Možeš uneti relativno u odnosu na root projekta, ili apsolutno
-from typing import List
-
-from typing import List
-
-from typing import List
 
 IMAGE_PATHS: List[str] = [
     "data/primus_raw/package_ab/200021503-1_9_2/200021503-1_9_2.png",
@@ -46,7 +42,7 @@ IMAGE_PATHS: List[str] = [
     "data/primus_raw/package_aa/000130554-3_3_3/000130554-3_3_3.png",
     "data/primus_raw/package_aa/000113706-1_1_1/000113706-1_1_1.png",
     "data/primus_raw/package_ab/211010628-1_1_1/211010628-1_1_1.png",
-    "data/primus_raw/package_ab/212001597-1_1_1/212001597-1_1_1.png"
+    "data/primus_raw/package_ab/212001597-1_1_1/212001597-1_1_1.png",
 ]
 
 OUT_DIR = "out/debug_regions"
