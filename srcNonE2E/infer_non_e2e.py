@@ -7,8 +7,7 @@ import cv2
 import tensorflow as tf
 
 from srcNonE2E.data.region_extractor import extract_regions as _extract_regions
-from srcNonE2E.data.pr_labels import ID_TO_PITCH
-from srcNonE2E.data.dr_labels import ID_TO_DURATION
+from srcNonE2E.data.labels import ID_TO_PITCH, ID_TO_DURATION
 from srcNonE2E.utils.tf_utils import _enable_gpu_memory_growth
 
 

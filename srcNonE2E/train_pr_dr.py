@@ -9,8 +9,7 @@ import argparse
 import tensorflow as tf
 
 from srcNonE2E.data.pr_dr_dataset import make_pr_dataset, make_dr_dataset
-from srcNonE2E.data.pr_labels import NUM_PITCH_CLASSES
-from srcNonE2E.data.dr_labels import NUM_DURATION_CLASSES
+from srcNonE2E.data.labels import NUM_PITCH_CLASSES, NUM_DURATION_CLASSES
 from srcNonE2E.models.pitch_model import build_pr_cnn
 from srcNonE2E.models.duration_model import build_dr_cnn
 from srcNonE2E.utils.tf_utils import _enable_gpu_memory_growth

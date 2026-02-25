@@ -5,8 +5,7 @@ Use make_pr_dataset() for pitch recognition, make_dr_dataset() for duration reco
 
 import tensorflow as tf
 
-from srcNonE2E.data.pr_labels import PITCH_TO_ID
-from srcNonE2E.data.dr_labels import DURATION_TO_ID
+from srcNonE2E.data.labels import PITCH_TO_ID, DURATION_TO_ID
 
 
 def _parse_csv_line(line: tf.Tensor):
