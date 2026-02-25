@@ -2,7 +2,7 @@ import os
 import tensorflow as tf
 import matplotlib.pyplot as plt
 
-from srcNonE2E.data.pr_dataset import make_pr_dataset
+from srcNonE2E.data.pr_dr_dataset import make_pr_dataset
 from srcNonE2E.data.pr_labels import NUM_PITCH_CLASSES
 from srcNonE2E.models.pitch_model import build_pr_cnn
 from srcNonE2E.utils.tf_utils import _enable_gpu_memory_growth

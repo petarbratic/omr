@@ -8,8 +8,7 @@ import argparse
 
 import tensorflow as tf
 
-from srcNonE2E.data.pr_dataset import make_pr_dataset
-from srcNonE2E.data.dr_dataset import make_dr_dataset
+from srcNonE2E.data.pr_dr_dataset import make_pr_dataset, make_dr_dataset
 from srcNonE2E.data.pr_labels import NUM_PITCH_CLASSES
 from srcNonE2E.data.dr_labels import NUM_DURATION_CLASSES
 from srcNonE2E.models.pitch_model import build_pr_cnn

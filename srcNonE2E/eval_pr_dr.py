@@ -7,8 +7,7 @@ import argparse
 import numpy as np
 import tensorflow as tf
 
-from srcNonE2E.data.pr_dataset import make_pr_dataset
-from srcNonE2E.data.dr_dataset import make_dr_dataset
+from srcNonE2E.data.pr_dr_dataset import make_pr_dataset, make_dr_dataset
 from srcNonE2E.data.pr_labels import ID_TO_PITCH, NUM_PITCH_CLASSES
 from srcNonE2E.data.dr_labels import ID_TO_DURATION, NUM_DURATION_CLASSES
 from srcNonE2E.utils.tf_utils import _enable_gpu_memory_growth
