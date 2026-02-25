@@ -1,13 +1,9 @@
-"""
-debug_region_extractor.py
-
-Ručni test za extract_regions(img_bgr).
-- Učita sliku (ili listu slika), pozove extract_regions,
-  nacrta bbox-ove i sačuva debug sliku u OUT_DIR.
-Podesi IMAGE_PATHS i OUT_DIR u DEFINES.
-
-python -m scripts.debug_region_extractor
-"""
+# debug_region_extractor.py
+# Manual test for extract_regions(img_bgr).
+# Loads image(s), calls extract_regions, draws bboxes and saves debug image to OUT_DIR.
+# Set IMAGE_PATHS and OUT_DIR in DEFINES.
+#
+# python -m scripts.debug_region_extractor
 import os
 import sys
 from pathlib import Path
@@ -63,16 +59,16 @@ def main() -> None:
     ensure_dir(OUT_DIR)
 
     if not IMAGE_PATHS:
-        raise ValueError("Dodaj bar jednu putanju u IMAGE_PATHS u debug_region_extractor.py")
+        raise ValueError("Add at least one path to IMAGE_PATHS in debug_region_extractor.py")
 
     for p in IMAGE_PATHS:
         if not os.path.exists(p):
-            print(f"NE POSTOJI: {p}")
+            print(f"NOT FOUND: {p}")
             continue
 
         img = cv2.imread(p, cv2.IMREAD_COLOR)
         if img is None:
-            print(f"NE MOGU DA UCITAM: {p}")
+            print(f"FAILED TO LOAD: {p}")
             continue
 
         bboxes = extract_regions(img)

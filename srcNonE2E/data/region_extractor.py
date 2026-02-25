@@ -1,19 +1,10 @@
-"""
-region_extractor.py
-
-extract_regions(img_bgr) -> List[BBox]
-
-Template matching using multiple notehead templates:
-- filled heads
-- half heads
-- whole heads
-
-Pipeline:
-- preprocess input (grayscale + inverted Otsu binarization)
-- preprocess templates the same way
-- match templates and apply NMS
-- output regions span full image height (y1=0, y2=H-1)
-"""
+# region_extractor.py
+#
+# extract_regions(img_bgr) -> List[BBox]
+#
+# Template matching using multiple notehead templates: filled heads, half heads, whole heads.
+# Pipeline: preprocess input (grayscale + inverted Otsu binarization), preprocess templates
+# the same way, match templates and apply NMS. Output regions span full image height (y1=0, y2=H-1).
 
 from __future__ import annotations
 
@@ -41,13 +32,6 @@ NMS_IOU = 0.35
 
 # Expand bbox in x around matched head
 PAD_X = 0.25  # * template_width
-
-# Optional staff removal (can help, can also hurt)
-USE_STAFF_REMOVAL = False
-STAFF_KERNEL_WIDTH_RATIO = 0.12  # kernel width = max(25, W * ratio)
-STAFF_OPEN_ITERS = 1
-STAFF_THIN_ERODE = 1
-
 
 NEG_TEMPLATE_PATHS = [
     "data/templates/24.png",
@@ -85,25 +69,9 @@ def _binarize_inv_otsu(gray: np.ndarray) -> np.ndarray:
     return bw
 
 
-def _remove_staff_lines_binary(bw_inv: np.ndarray) -> np.ndarray:
-    # Remove horizontal lines from inverted binary image
-    H, W = bw_inv.shape[:2]
-    kw = max(25, int(round(W * STAFF_KERNEL_WIDTH_RATIO)))
-    kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (kw, 1))
-
-    staff = cv2.morphologyEx(bw_inv, cv2.MORPH_OPEN, kernel, iterations=STAFF_OPEN_ITERS)
-
-    if STAFF_THIN_ERODE > 0:
-        staff = cv2.erode(staff, cv2.getStructuringElement(cv2.MORPH_RECT, (3, 1)), iterations=STAFF_THIN_ERODE)
-
-    return cv2.subtract(bw_inv, staff)
-
-
 def _preprocess_input(img_bgr: np.ndarray) -> np.ndarray:
     gray = _to_gray(img_bgr)
     bw = _binarize_inv_otsu(gray)
-    if USE_STAFF_REMOVAL:
-        bw = _remove_staff_lines_binary(bw)
     return bw
 
 

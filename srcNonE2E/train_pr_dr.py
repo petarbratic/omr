@@ -1,7 +1,5 @@
-"""
-python -m srcNonE2E.train_pr_dr --task pr
-python -m srcNonE2E.train_pr_dr --task dr
-"""
+# python -m srcNonE2E.train_pr_dr --task pr
+# python -m srcNonE2E.train_pr_dr --task dr
 
 import os
 import argparse
@@ -105,7 +103,7 @@ def main() -> None:
         task_name = "DR (duration)"
 
     print(f"Task: {task_name}")
-    print("Konfiguracija:")
+    print("Configuration:")
     for k, v in cfg.items():
         if k in {"build_model"}:
             continue

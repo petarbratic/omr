@@ -1,25 +1,23 @@
-"""
-preprocess_dataset.py
-
-Preprocessing (NO MASTER, direct PR/DR with caps):
-- Loads a split CSV (image_path, transcript)
-- Extracts note tokens from transcript -> (token, duration, pitch)
-- Extracts regions (bbox) from image and sorts them by x-axis (single-stave monophonic)
-- If counts mismatch -> mismatch-<split>.csv
-- If counts match -> writes directly:
-    pr-<split>.csv: (image_path, x1, y1, x2, y2, idx, pitch)
-    dr-<split>.csv: (image_path, x1, y1, x2, y2, idx, duration)
-
-Caps / balancing:
-- Writes to PR only while pitch_count[pitch] < MAX_PER_PITCH
-- Writes to DR only while dur_count[duration] < MAX_PER_DURATION
-
-Optional early stop:
-- If all pitch classes hit cap AND all duration classes hit cap -> stop processing split.
-
-Requirement: implemented extract_regions(img_bgr) function so that it returns a list of bounding boxes:
-    [(x1, y1, x2, y2), ...]
-"""
+# preprocess_dataset.py
+#
+# Preprocessing (NO MASTER, direct PR/DR with caps):
+# - Loads a split CSV (image_path, transcript)
+# - Extracts note tokens from transcript -> (token, duration, pitch)
+# - Extracts regions (bbox) from image and sorts them by x-axis (single-stave monophonic)
+# - If counts mismatch -> mismatch-<split>.csv
+# - If counts match -> writes directly:
+#     pr-<split>.csv: (image_path, x1, y1, x2, y2, idx, pitch)
+#     dr-<split>.csv: (image_path, x1, y1, x2, y2, idx, duration)
+#
+# Caps / balancing:
+# - Writes to PR only while pitch_count[pitch] < MAX_PER_PITCH
+# - Writes to DR only while dur_count[duration] < MAX_PER_DURATION
+#
+# Optional early stop:
+# - If all pitch classes hit cap AND all duration classes hit cap -> stop processing split.
+#
+# Requirement: implemented extract_regions(img_bgr) function that returns list of bounding boxes:
+#     [(x1, y1, x2, y2), ...]
 
 import os
 import csv
@@ -48,16 +46,15 @@ PRINT_MISMATCH_EXAMPLES = 10
 # =========================================================
 # BALANCING / CAPS
 # =========================================================
-# Preporučeno "najbolje" (stabilno): 1000 po klasi.
-# Promeni po potrebi.
+# Recommended "best" (stable): 1000 per class. Change as needed.
 MAX_PER_PITCH = 1000
 MAX_PER_DURATION = 1000
 
-# 24 pitch klasa: L-3..L8 + S-3..S8
+# 24 pitch classes: L-3..L8 + S-3..S8
 PITCH_CLASSES = [f"L{i}" for i in range(-3, 9)] + [f"S{i}" for i in range(-3, 9)]
 
-# Duration klase koje očekuješ (po tvom master primeru: "quarter", "half", ...)
-# Ako neka od ovih ne postoji u dataset-u, early-stop za duration nikad neće okinuti (to je ok).
+# Duration classes expected (e.g. "quarter", "half", ...).
+# If any of these is missing from the dataset, duration early-stop will never trigger (that is ok).
 DURATION_CLASSES = [
     "quadruple_whole",
     "double_whole",
@@ -70,7 +67,7 @@ DURATION_CLASSES = [
     "sixty_fourth",
 ]
 
-EARLY_STOP_WHEN_FULL = True  # ako hoćeš da uvek obradi ceo split, stavi False
+EARLY_STOP_WHEN_FULL = True  # set False to always process the full split
 
 
 def pitch_full(pitch_counts) -> bool:
@@ -112,20 +109,16 @@ def read_split_csv(csv_path: str) -> List[Tuple[str, str]]:
     with open(csv_path, "r", encoding="utf-8") as f:
         reader = csv.DictReader(f)
         if reader.fieldnames is None:
-            raise ValueError(f"Prazan CSV: {csv_path}")
+            raise ValueError(f"Empty CSV: {csv_path}")
         if "image_path" not in reader.fieldnames or "transcript" not in reader.fieldnames:
-            raise ValueError(f"{csv_path} mora imati kolone: image_path, transcript")
+            raise ValueError(f"{csv_path} must have columns: image_path, transcript")
         for r in reader:
             rows.append((r["image_path"].strip(), r["transcript"].strip()))
     return rows
 
 
 def process_split(split_name: str, split_csv: str) -> None:
-    """
-    Writes:
-      pr-<split>.csv, dr-<split>.csv, mismatch-<split>.csv
-    with per-class caps (balanced dataset).
-    """
+    # Writes: pr-<split>.csv, dr-<split>.csv, mismatch-<split>.csv with per-class caps (balanced dataset).
     ensure_dir(OUT_DIR)
 
     pr_path = os.path.join(OUT_DIR, f"pr-{split_name}.csv")
@@ -161,7 +154,7 @@ def process_split(split_name: str, split_csv: str) -> None:
             # Optional early-stop when both datasets are "full"
             if EARLY_STOP_WHEN_FULL and pitch_full(pitch_counts) and duration_full(dur_counts):
                 print(
-                    f"[{split_name}] STOP: pitch i duration su popunjeni do limita. "
+                    f"[{split_name}] STOP: pitch and duration are filled to limit. "
                     f"pr_rows={written_pr} dr_rows={written_dr} processed_images={processed_images}"
                 )
                 break
@@ -211,9 +204,8 @@ def process_split(split_name: str, split_csv: str) -> None:
 
             matched_images += 1
 
-            # Aligned per-note loop.
-            # Sada je dozvoljeno da se pojedinačne note preskoče (zbog cap),
-            # jer više ne insistiramo na master fajlu koji mora imati sve.
+            # Aligned per-note loop. Individual notes may be skipped (due to cap);
+            # we no longer require a master file with all notes.
             for idx, (bb, note) in enumerate(zip(regions, notes)):
                 x1, y1, x2, y2 = bb
                 token, duration, pitch = note
@@ -224,8 +216,7 @@ def process_split(split_name: str, split_csv: str) -> None:
                     pitch_counts[pitch] += 1
                     written_pr += 1
 
-                # DR (duration) cap
-                # Ako duration nije u listi očekivanih, preskoči (ili dodaj u listu ako želiš da ga treniraš)
+                # DR (duration) cap. If duration is not in expected list, skip (or add to list if you want to train on it).
                 if duration in DURATION_CLASSES and dur_counts[duration] < MAX_PER_DURATION:
                     drw.writerow([rel_path, x1, y1, x2, y2, idx, duration])
                     dur_counts[duration] += 1
