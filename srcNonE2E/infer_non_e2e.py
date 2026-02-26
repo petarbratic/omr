@@ -3,14 +3,13 @@
 import os
 from typing import List
 
-import numpy as np
 import cv2
 import tensorflow as tf
 
 from srcNonE2E.data.region_extractor import extract_regions
-from srcNonE2E.data.labels import ID_TO_PITCH, ID_TO_DURATION
 from srcNonE2E.utils.tf_utils import _enable_gpu_memory_growth
-from srcNonE2E.eval_helpers.eval_geometry import sort_regions_by_x, crop_resize_norm
+from srcNonE2E.eval_helpers.eval_geometry import sort_regions_by_x
+from srcNonE2E.eval_helpers.eval_inference import infer_tokens_for_image
 
 
 # Configuration (set IMAGE_PATH to your image; path can be absolute or relative to project root)
@@ -19,6 +18,7 @@ PR_MODEL_PATH = "artifacts/pr_cnn.keras"
 DR_MODEL_PATH = "artifacts/dr_cnn.keras"
 INPUT_H = 257
 INPUT_W = 65
+BATCH_SIZE = 256
 OUT_TXT = None  # e.g. "out/infer_non_e2e.txt"
 
 
@@ -28,6 +28,7 @@ def infer_one_image(
     dr_model: tf.keras.Model,
     input_h: int,
     input_w: int,
+    batch_size: int = BATCH_SIZE,
 ) -> List[str]:
     img_bgr = cv2.imread(image_path, cv2.IMREAD_COLOR)
     if img_bgr is None:
@@ -36,28 +37,15 @@ def infer_one_image(
     regions = extract_regions(img_bgr)
     regions = sort_regions_by_x(regions)
 
-    if len(regions) == 0:
-        return []
-
-    crops = np.zeros((len(regions), input_h, input_w, 1), dtype=np.float32)
-    for i, bb in enumerate(regions):
-        crops[i] = crop_resize_norm(img_bgr, bb, input_h, input_w)
-
-    pr_logits = pr_model.predict(crops, batch_size=256, verbose=0)
-    dr_logits = dr_model.predict(crops, batch_size=256, verbose=0)
-
-    # Get predicted class IDs for pitch and duration.
-    pr_ids = np.argmax(pr_logits, axis=-1).astype(np.int32)
-    dr_ids = np.argmax(dr_logits, axis=-1).astype(np.int32)
-
-    # Convert predicted IDs to tokens.
-    tokens: List[str] = []
-    for pid, did in zip(pr_ids, dr_ids):
-        pitch = ID_TO_PITCH.get(int(pid), f"UNKP{int(pid)}")
-        duration = ID_TO_DURATION.get(int(did), f"UNKD{int(did)}")
-        tokens.append(f"note.{duration}-{pitch}")
-
-    return tokens
+    return infer_tokens_for_image(
+        img_bgr=img_bgr,
+        regions=regions,
+        pr_model=pr_model,
+        dr_model=dr_model,
+        input_h=input_h,
+        input_w=input_w,
+        batch_size=batch_size,
+    )
 
 
 def main():

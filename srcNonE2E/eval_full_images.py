@@ -43,14 +43,8 @@ def main():
     empty_ref = 0
 
     seq_errors = 0
-
-    total_ref_symbols = 0
-    total_sym_edits = 0
-    sum_norm_sym_ed = 0.0
-
     total_ref_chars = 0
     total_char_edits = 0
-    sum_norm_char_ed = 0.0
 
     for rel_path, transcript in data:
         processed += 1
@@ -87,10 +81,8 @@ def main():
         evaluated += 1
 
         sym_ed = levenshtein_tokens(gt_tokens, pred_tokens)
-        total_sym_edits += sym_ed
-        total_ref_symbols += len(gt_tokens)
-        norm_sym_ed = sym_ed / len(gt_tokens)
-        sum_norm_sym_ed += norm_sym_ed
+        if sym_ed > 0:
+            seq_errors += 1
 
         ref_str = " ".join(gt_tokens)
         hyp_str = " ".join(pred_tokens)
@@ -99,39 +91,40 @@ def main():
 
         char_ed = levenshtein_chars(ref_chars, hyp_chars)
         total_char_edits += char_ed
-        total_ref_chars += len(ref_chars) if len(ref_chars) > 0 else 0
-        norm_char_ed = char_ed / max(1, len(ref_chars))
-        sum_norm_char_ed += norm_char_ed
-
-        if sym_ed > 0:
-            seq_errors += 1
+        if len(ref_chars) > 0:
+            total_ref_chars += len(ref_chars)
 
         if PROGRESS_EVERY and processed % PROGRESS_EVERY == 0:
-            ser_seq = (seq_errors / evaluated) * 100.0 if evaluated else 0.0
-            ser_sym_micro = (total_sym_edits / total_ref_symbols) * 100.0 if total_ref_symbols else 0.0
-            cer_micro = (total_char_edits / total_ref_chars) * 100.0 if total_ref_chars else 0.0
+            if evaluated:
+                ser = (seq_errors / evaluated) * 100.0
+            else:
+                ser = 0.0
+            if total_ref_chars:
+                cer = (total_char_edits / total_ref_chars) * 100.0
+            else:
+                cer = 0.0
             print(
                 f"progress: processed={processed} evaluated={evaluated} bad={bad_or_missing} "
-                f"SER_seq={ser_seq:.3f}% SER_sym={ser_sym_micro:.3f}% CER={cer_micro:.3f}%"
+                f"SER={ser:.3f}% CER={cer:.3f}%"
             )
 
-    ser_seq = (seq_errors / evaluated) * 100.0 if evaluated else 0.0
-    ser_sym_micro = (total_sym_edits / total_ref_symbols) * 100.0 if total_ref_symbols else 0.0
-    ser_sym_macro = (sum_norm_sym_ed / evaluated) * 100.0 if evaluated else 0.0
+    if evaluated:
+        ser = (seq_errors / evaluated) * 100.0
+    else:
+        ser = 0.0
 
-    cer_micro = (total_char_edits / total_ref_chars) * 100.0 if total_ref_chars else 0.0
-    cer_macro = (sum_norm_char_ed / evaluated) * 100.0 if evaluated else 0.0
+    if total_ref_chars:
+        cer = (total_char_edits / total_ref_chars) * 100.0
+    else:
+        cer = 0.0
 
     print("CSV:", CSV_PATH)
     print("Processed images:", processed)
     print("Evaluated images:", evaluated)
     print("Bad/missing images:", bad_or_missing)
     print("Empty reference sequences skipped:", empty_ref)
-    print(f"Sequence Error Rate (SER_seq %): {ser_seq:.6f}")
-    print(f"Symbol Error Rate (SER_sym % micro): {ser_sym_micro:.6f}")
-    print(f"Symbol Error Rate (SER_sym % macro): {ser_sym_macro:.6f}")
-    print(f"Character Error Rate (CER % micro): {cer_micro:.6f}")
-    print(f"Character Error Rate (CER % macro): {cer_macro:.6f}")
+    print(f"SER (%): {ser:.6f}")
+    print(f"CER (%): {cer:.6f}")
 
 
 if __name__ == "__main__":

@@ -11,7 +11,7 @@ def levenshtein_tokens(ref: List[str], hyp: List[str]) -> int:
         return m
     if m == 0:
         return n
-
+    
     if m < n:
         ref, hyp = hyp, ref
         n, m = m, n
@@ -24,11 +24,7 @@ def levenshtein_tokens(ref: List[str], hyp: List[str]) -> int:
         ri = ref[i - 1]
         for j in range(1, m + 1):
             cost = 0 if ri == hyp[j - 1] else 1
-            cur[j] = min(
-                prev[j] + 1,
-                cur[j - 1] + 1,
-                prev[j - 1] + cost,
-            )
+            cur[j] = min(prev[j] + 1, cur[j - 1] + 1, prev[j - 1] + cost)
         prev, cur = cur, prev
 
     return prev[m]

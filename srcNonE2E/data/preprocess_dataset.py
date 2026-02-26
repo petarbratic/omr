@@ -1,11 +1,11 @@
 # preprocess_dataset.py
 #
-# Preprocessing (NO MASTER, direct PR/DR with caps):
+# Preprocessing (PR/DR with caps):
 # - Loads a split CSV (image_path, transcript)
 # - Extracts note tokens from transcript -> (token, duration, pitch)
 # - Extracts regions (bbox) from image and sorts them by x-axis (single-stave monophonic)
 # - If counts mismatch -> mismatch-<split>.csv
-# - If counts match -> writes directly:
+# - If counts match -> writes:
 #     pr-<split>.csv: (image_path, x1, y1, x2, y2, idx, pitch)
 #     dr-<split>.csv: (image_path, x1, y1, x2, y2, idx, duration)
 #
@@ -15,9 +15,6 @@
 #
 # Optional early stop:
 # - If all pitch classes hit cap AND all duration classes hit cap -> stop processing split.
-#
-# Requirement: implemented extract_regions(img_bgr) function that returns list of bounding boxes:
-#     [(x1, y1, x2, y2), ...]
 
 import os
 import csv
