@@ -1,3 +1,4 @@
+# I used ChatGPT and Cursor for the development of this project.
 # Pitch and duration label sets.
 # Pitch: L-3..L8, S-3..S8 (24 classes). Duration: quarter, eighth, ... (9 classes).
 

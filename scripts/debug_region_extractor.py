@@ -1,3 +1,4 @@
+# I used ChatGPT and Cursor for the development of this project.
 # debug_region_extractor.py
 # Manual test for extract_regions(img_bgr).
 # Loads image(s), calls extract_regions, draws bboxes and saves debug image to OUT_DIR.

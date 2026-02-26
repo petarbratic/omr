@@ -1,3 +1,4 @@
+# I used ChatGPT and Cursor for the development of this project.
 # Input note token examples:
 #   - "note.quarter-L4"
 #   - "note.half-S-2"

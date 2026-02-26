@@ -1,3 +1,4 @@
+# I used ChatGPT and Cursor for the development of this project.
 # Helpers for reading CSV split files (image_path, transcript).
 
 import csv

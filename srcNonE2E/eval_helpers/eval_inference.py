@@ -1,3 +1,4 @@
+# I used ChatGPT and Cursor for the development of this project.
 # Helpers for running PR/DR model inference on image regions.
 
 from typing import List

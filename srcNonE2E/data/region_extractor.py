@@ -1,3 +1,4 @@
+# I used ChatGPT and Cursor for the development of this project.
 # region_extractor.py
 #
 # extract_regions(img_bgr) -> List[BBox]

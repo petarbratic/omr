@@ -1,3 +1,4 @@
+# I used ChatGPT and Cursor for the development of this project.
 # This script filters out samples with "gracenote." and "dot-" in the transcript
 # from the previous manifest CSV files.
 import csv

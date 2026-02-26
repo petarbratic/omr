@@ -1,3 +1,4 @@
+# I used ChatGPT and Cursor for the development of this project.
 import tensorflow as tf
 
 

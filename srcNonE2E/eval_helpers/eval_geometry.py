@@ -1,3 +1,4 @@
+# I used ChatGPT and Cursor for the development of this project.
 # Helpers for sorting regions and preparing image crops (crop, resize, normalize).
 
 from typing import List, Tuple

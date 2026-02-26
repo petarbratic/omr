@@ -1,3 +1,4 @@
+# I used ChatGPT and Cursor for the development of this project.
 # python -m srcNonE2E.infer_non_e2e
 # Run PR/DR inference on one image and print predicted tokens.
 import os

@@ -1,3 +1,4 @@
+# I used ChatGPT and Cursor for the development of this project.
 # python -m srcNonE2E.eval_full_images
 
 import os

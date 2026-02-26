@@ -1,3 +1,4 @@
+# I used ChatGPT and Cursor for the development of this project.
 # Helpers for obtaining ground-truth tokens from transcript.
 
 from typing import List

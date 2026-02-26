@@ -1,3 +1,4 @@
+# I used ChatGPT and Cursor for the development of this project.
 # Helpers for Levenshtein (edit) distance: token-level and character-level.
 
 from typing import List
