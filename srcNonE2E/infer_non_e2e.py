@@ -1,5 +1,5 @@
 # python -m srcNonE2E.infer_non_e2e
-
+# Run PR/DR inference on one image and print predicted tokens.
 import os
 from typing import List
 
@@ -46,9 +46,11 @@ def infer_one_image(
     pr_logits = pr_model.predict(crops, batch_size=256, verbose=0)
     dr_logits = dr_model.predict(crops, batch_size=256, verbose=0)
 
+    # Get predicted class IDs for pitch and duration.
     pr_ids = np.argmax(pr_logits, axis=-1).astype(np.int32)
     dr_ids = np.argmax(dr_logits, axis=-1).astype(np.int32)
 
+    # Convert predicted IDs to tokens.
     tokens: List[str] = []
     for pid, did in zip(pr_ids, dr_ids):
         pitch = ID_TO_PITCH.get(int(pid), f"UNKP{int(pid)}")

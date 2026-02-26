@@ -28,7 +28,7 @@ def _save_training_plots(history, out_dir: str, prefix: str) -> None:
     plt.xlabel("Epoch")
     plt.ylabel("Accuracy")
     plt.legend(["train", "val"])
-    plt.tight_layout()
+    plt.tight_layout() # to avoid cutting off labels
     plt.savefig(os.path.join(out_dir, f"{prefix}_acc.png"), dpi=200)
     plt.close()
 

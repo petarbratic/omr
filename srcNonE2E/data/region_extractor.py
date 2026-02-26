@@ -20,7 +20,7 @@ import numpy as np
 # =========================================================
 
 # Template folder
-TEMPLATES_DIR = "data/templates"
+TEMPLATES_DIR = "srcNonE2E/data/templates"
 
 # Match thresholds per group
 MATCH_THRESH_FILLED = 0.74
@@ -34,8 +34,8 @@ NMS_IOU = 0.35
 PAD_X = 0.25  # * template_width
 
 NEG_TEMPLATE_PATHS = [
-    "data/templates/24.png",
-    "data/templates/128.png",
+    "srcNonE2E/data/templates/24.png",
+    "srcNonE2E/data/templates/128.png",
 ]
 MATCH_THRESH_NEG = 0.75
 NEG_IOU_1D = 0.35
