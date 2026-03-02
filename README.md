@@ -60,7 +60,7 @@ By default the code expects:
   - `utils/` — TensorFlow utilities
 - **`scripts/`** — e.g. `debug_region_extractor.py`
 - **`artifacts/`** — trained models (included)
-- **`poster.pdf`** — project poster
+- **`Poster.pdf`** — project poster
 
 ---
 
@@ -135,7 +135,7 @@ Output: number of regions and the predicted token sequence (`note.<duration>-<pi
 
 ## Poster
 
-The project poster is provided as **`poster.pdf`** (or in `docs/`). It summarizes the problem, dataset, architecture, and evaluation results.
+The project poster is provided as **`Poster.pdf`**. It summarizes the problem, dataset, architecture, and evaluation results.
 
 ---
 
