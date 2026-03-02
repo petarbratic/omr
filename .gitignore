@@ -13,7 +13,7 @@ __pycache__/
 *.h5
 *.ckpt
 
-#artifacts
+# trained models / artifacts
 artifacts/
 
 #oldVersion
