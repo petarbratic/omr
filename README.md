@@ -43,10 +43,7 @@ By default the code expects:
 - `artifacts/pr_cnn.keras` — Pitch Recognition model  
 - `artifacts/dr_cnn.keras` — Duration Recognition model  
 
-You have two options:
-
-1. **Train the models yourself** following the *Training* section below (recommended for reproducing results).  
-2. Or **download pre-trained models** from an external link (if provided in the course issue/README) and place them into the `artifacts/` directory.
+**Train the models yourself** following the *Training* section below (recommended for reproducing results).  
 
 ---
 
